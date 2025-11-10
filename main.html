@@ -135,7 +135,7 @@
     let currentSymbol = "X";
     let gameOver = false;
 
-    // On Submit button click
+    // When Submit is clicked
     submitBtn.addEventListener("click", () => {
       player1 = player1Input.value.trim();
       player2 = player2Input.value.trim();
@@ -148,25 +148,26 @@
       inputSection.style.display = "none";
       boardSection.style.display = "flex";
       currentPlayer = player1;
-      message.textContent = `${currentPlayer}, you're up!`;
+      message.textContent = `${currentPlayer}, you're up`;
     });
 
-    // On cell click
+    // Cell click logic
     cells.forEach(cell => {
       cell.addEventListener("click", () => {
         if (gameOver || cell.textContent !== "") return;
 
         cell.textContent = currentSymbol;
+
         if (checkWinner()) {
-          message.textContent = `${currentPlayer}, congratulations you won!`;
+          message.textContent = `${currentPlayer} congratulations you won!`;
           gameOver = true;
           return;
         }
 
-        // Switch turns
+        // Switch turn
         currentSymbol = currentSymbol === "X" ? "O" : "X";
         currentPlayer = currentPlayer === player1 ? player2 : player1;
-        message.textContent = `${currentPlayer}, you're up!`;
+        message.textContent = `${currentPlayer}, you're up`;
       });
     });
 
