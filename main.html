@@ -1,16 +1,188 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic Tac Toe</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f3f3f3;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2em;
+      color: #333;
+    }
+
+    .player-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .player-inputs input {
+      padding: 10px;
+      width: 200px;
+      border: 1px solid #999;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    #submit {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #submit:hover {
+      background-color: #45a049;
+    }
+
+    .board {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .message {
+      margin: 20px 0;
+      font-size: 20px;
+      color: #444;
+      font-weight: bold;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 5px;
+    }
+
+    .cell {
+      background-color: white;
+      border: 2px solid #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      cursor: pointer;
+    }
+
+    .cell:disabled {
+      cursor: not-allowed;
+    }
+  </style>
 </head>
-
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
+  <div class="container">
+    <div class="player-inputs" id="input-section">
+      <h1>Enter Player Names</h1>
+      <input type="text" id="player-1" placeholder="Player 1 Name" />
+      <input type="text" id="player-2" placeholder="Player 2 Name" />
+      <button id="submit">Submit</button>
+    </div>
 
+    <div class="board" id="board-section">
+      <h1>Tic Tac Toe</h1>
+      <div class="message" id="message"></div>
+      <div class="grid" id="grid">
+        <button class="cell" id="1"></button>
+        <button class="cell" id="2"></button>
+        <button class="cell" id="3"></button>
+        <button class="cell" id="4"></button>
+        <button class="cell" id="5"></button>
+        <button class="cell" id="6"></button>
+        <button class="cell" id="7"></button>
+        <button class="cell" id="8"></button>
+        <button class="cell" id="9"></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const submitBtn = document.getElementById("submit");
+    const player1Input = document.getElementById("player-1");
+    const player2Input = document.getElementById("player-2");
+    const inputSection = document.getElementById("input-section");
+    const boardSection = document.getElementById("board-section");
+    const message = document.getElementById("message");
+    const cells = document.querySelectorAll(".cell");
+
+    let player1 = "";
+    let player2 = "";
+    let currentPlayer = "";
+    let currentSymbol = "X";
+    let gameOver = false;
+
+    submitBtn.addEventListener("click", () => {
+      player1 = player1Input.value.trim();
+      player2 = player2Input.value.trim();
+
+      if (!player1 || !player2) {
+        alert("Please enter names for both players!");
+        return;
+      }
+
+      inputSection.style.display = "none";
+      boardSection.style.display = "flex";
+      currentPlayer = player1;
+      message.textContent = `${currentPlayer}, you're up!`;
+    });
+
+    cells.forEach(cell => {
+      cell.addEventListener("click", () => {
+        if (gameOver || cell.textContent !== "") return;
+
+        cell.textContent = currentSymbol;
+        if (checkWinner()) {
+          message.textContent = `${currentPlayer}, congratulations you won! 🎉`;
+          gameOver = true;
+          return;
+        }
+
+        // Switch turns
+        currentSymbol = currentSymbol === "X" ? "O" : "X";
+        currentPlayer = currentPlayer === player1 ? player2 : player1;
+        message.textContent = `${currentPlayer}, you're up!`;
+      });
+    });
+
+    function checkWinner() {
+      const winCombos = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7],
+      ];
+
+      return winCombos.some(combo => {
+        const [a, b, c] = combo.map(id => document.getElementById(id).textContent);
+        return a && a === b && b === c;
+      });
+    }
+  </script>
 </body>
-
 </html>
