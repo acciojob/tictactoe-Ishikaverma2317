@@ -8,7 +8,7 @@
     * {
       box-sizing: border-box;
       margin: 0;
-      padding: 0; 
+      padding: 0;
       font-family: Arial, sans-serif;
     }
 
@@ -18,7 +18,7 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background: #f3f3f3;
+      background-color: #f3f3f3;
     }
 
     h1 {
@@ -28,7 +28,7 @@
     }
 
     .player-inputs {
-      display: flex; 
+      display: flex;
       flex-direction: column;
       gap: 10px;
       align-items: center;
@@ -132,10 +132,10 @@
     let player1 = "";
     let player2 = "";
     let currentPlayer = "";
-    let currentSymbol = "X";
+    let currentSymbol = "x"; // lowercase to match test
     let gameOver = false;
 
-    // When Submit is clicked
+    // On Submit Button Click
     submitBtn.addEventListener("click", () => {
       player1 = player1Input.value.trim();
       player2 = player2Input.value.trim();
@@ -151,12 +151,12 @@
       message.textContent = `${currentPlayer}, you're up`;
     });
 
-    // Cell click logic
+    // On Cell Click
     cells.forEach(cell => {
       cell.addEventListener("click", () => {
         if (gameOver || cell.textContent !== "") return;
 
-        cell.textContent = currentSymbol;
+        cell.textContent = currentSymbol; // lowercase x or o
 
         if (checkWinner()) {
           message.textContent = `${currentPlayer} congratulations you won!`;
@@ -165,13 +165,13 @@
         }
 
         // Switch turn
-        currentSymbol = currentSymbol === "X" ? "O" : "X";
+        currentSymbol = currentSymbol === "x" ? "o" : "x";
         currentPlayer = currentPlayer === player1 ? player2 : player1;
         message.textContent = `${currentPlayer}, you're up`;
       });
     });
 
-    // Check winner
+    // Check Winning Combinations
     function checkWinner() {
       const winCombos = [
         [1, 2, 3],
